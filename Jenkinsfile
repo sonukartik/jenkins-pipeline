@@ -8,9 +8,7 @@ pipeline{
     }
        stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("my-flask-app")
-                }
+              sh 'docker build -t my-image-name .'
             }
         }
         stage('Run Container') {

@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'my-image-name'
-    }
-
     stages {
         stage('Clone repo') {
             steps {
@@ -15,7 +11,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("my-image")
+                    // Build Docker image and save to variable
+                    dockerImage = docker.build("my-image-name")
                 }
             }
         }
@@ -23,6 +20,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 script {
+                    // Run the image exposing port 5000
                     dockerImage.run("-p 5000:5000")
                 }
             }

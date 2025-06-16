@@ -1,20 +1,29 @@
-pipeline{
-  agent any
-  stages{
-    stage('Clone repo'){
-      steps{
-            git branch: 'main', url: 'https://github.com/sonukartik/jenkins-pipeline.git'
-      }
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'my-image-name'
     }
-       stage('Build Docker Image') {
+
+    stages {
+        stage('Clone repo') {
             steps {
-              sh 'docker build -t my-image-name .'
+                git branch: 'main', url: 'https://github.com/sonukartik/jenkins-pipeline.git'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("my-image")
+                }
+            }
+        }
+
         stage('Run Container') {
             steps {
                 script {
-                    dockerImage.run('-p 5000:5000')
+                    dockerImage.run("-p 5000:5000")
                 }
             }
         }

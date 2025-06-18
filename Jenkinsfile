@@ -1,20 +1,14 @@
 pipeline {
     agent any
     stages {
-         stage('Dummy Init') {
+        stage('Clone repo') {
             steps {
-                sh 'echo "Forcing workspace creation..."'
+                git branch: 'main', url: 'https://github.com/sonukartik/jenkins-pipeline.git'
             }
         }
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker build -t my-image-name .'
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d -p 5000:5000 --name my-container my-image-name'
+                echo 'Building...'
             }
         }
     }

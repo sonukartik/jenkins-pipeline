@@ -1,14 +1,13 @@
 pipeline {
     agent any
     stages {
-        stage('Clone repo') {
+        stage('Print Workspace') {
             steps {
-                git branch: 'main', url: 'https://github.com/sonukartik/jenkins-pipeline.git'
-            }
-        }
-        stage('Build') {
-            steps {
-                echo 'Building...'
+                script {
+                    echo "WORKSPACE: ${env.WORKSPACE}"
+                    sh 'pwd'
+                    sh 'ls -la'
+                }
             }
         }
     }

@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages {
+         stage('Dummy Init') {
+            steps {
+                sh 'echo "Forcing workspace creation..."'
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t my-image-name .'

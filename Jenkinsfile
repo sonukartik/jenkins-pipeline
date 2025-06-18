@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('Clone repo') {
             steps {
@@ -9,14 +10,24 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t my-image-name .'
+                sh 'docker build -t my-image-name .'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" run -p 5000:5000 my-image-name'
+                sh 'docker run -d -p 5000:5000 --name my-container my-image-name'
             }
+        }
+    }
+
+    post {
+        always {
+            // Optional: Stop and remove container after job finishes
+            sh '''
+                docker stop my-container || true
+                docker rm my-container || true
+            '''
         }
     }
 }
